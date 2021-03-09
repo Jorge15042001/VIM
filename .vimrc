@@ -1,4 +1,4 @@
-set spell spelllang=en_us
+set nospell spelllang=en_us
 syntax on
 
 set mouse=a
@@ -38,6 +38,14 @@ set splitright
 autocmd filetype cpp nnoremap <C-c> :!g++ -o %:r.out % -std=c++11<Enter>
 autocmd filetype cpp nnoremap <C-x> :!./%:r.out %<Enter>
 
+"configuration for compiling C
+autocmd filetype c nnoremap <C-c> :!gcc -o %:r.out % <Enter>
+autocmd filetype c nnoremap <C-x> :!./%:r.out %<Enter>
+
+"runing python scripts
+autocmd filetype python nnoremap <C-x> :!python3 %:r.py % <Enter>
+
+
 "configuration for splits 
 nnoremap <C-j> <C-W><C-J>
 nnoremap <C-k> <C-W><C-K>
@@ -48,25 +56,69 @@ nnoremap <C-h> <C-W><C-H>
 
 call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
-Plug 'vim-syntastic/syntastic'
+"Plug 'vim-syntastic/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Raimondi/delimitMate'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'stevearc/vim-arduino'
+Plug 'tikhomirov/vim-glsl'
+Plug 'petrbroz/vim-glsl'
 call plug#end()
 " recomend settings forn syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
 " gruvbox configurations
 let g:gruvbox_guisp_fallback = "bg"
 set t_Co=256
 set background=dark
-colorscheme gruvbox
+ colorscheme gruvbox
+" transparent background
+" hi Normal guibg=NONE ctermbg=NONE 
+"
+
+
+
+" for transparent background
+function! AdaptColorscheme()
+   highlight clear CursorLine
+   highlight Normal ctermbg=none
+   highlight LineNr ctermbg=none
+   highlight Folded ctermbg=none
+   highlight NonText ctermbg=none
+   highlight SpecialKey ctermbg=none
+   highlight VertSplit ctermbg=none
+   highlight SignColumn ctermbg=none
+endfunction
+autocmd ColorScheme * call AdaptColorscheme()
+
+highlight Normal guibg=NONE ctermbg=NONE
+highlight CursorColumn cterm=NONE ctermbg=NONE ctermfg=NONE
+highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE
+highlight CursorLineNr cterm=NONE ctermbg=NONE ctermfg=NONE
+highlight clear LineNr
+highlight clear SignColumn
+
+" Change Color when entering Insert Mode
+"autocmd InsertEnter * set nocursorline
+
+" Revert Color to default when leaving Insert Mode
+"autocmd InsertLeave * set nocursorline
+
+"" extra settings, uncomment them if necessary :)
+"set cursorline
+"set noshowmode
+set nocursorline
+
+
 " Give more space for displaying messages.
+" let g:airline_theme='gruvbox'
 set cmdheight=2
 
 " Having longer update time (default is 4000 ms = 4 s) leads to noticeable
@@ -235,3 +287,5 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+
